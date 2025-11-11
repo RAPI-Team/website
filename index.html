@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAPI Documentation - Roblox Version API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        header h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.6em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-lang {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #888;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .class-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .class-card h4 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .property-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .property-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #764ba2;
+        }
+
+        .property-item code {
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .example {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .framework-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 12px 25px;
+            background: #e9ecef;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            color: #666;
+        }
+
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .method { color: #dcdcaa; }
+        .class-name { color: #4ec9b0; }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 RAPI</h1>
+            <p>Roblox Version API for .NET Applications</p>
+            <span class="version-badge">v1.0.0</span>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#classes">Classes</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#api-reference">API Reference</a></li>
+            </ul>
+        </nav>
+
+        <section id="installation" class="section">
+            <h2>📦 Installation</h2>
+            <p>Add the RAPI DLL to your .NET project (WinForms, WPF, Console, etc.)</p>
+            
+            <h3>Steps:</h3>
+            <ol style="margin-left: 20px; margin-top: 15px;">
+                <li>Download the RAPI.dll file</li>
+                <li>Right-click your project → Add → Reference</li>
+                <li>Browse to the RAPI.dll file and add it</li>
+                <li>Add <code style="background: #e9ecef; padding: 3px 8px; border-radius: 5px;">using RAPI;</code> to your code</li>
+            </ol>
+
+            <div class="note">
+                <strong>⚡ Requirements:</strong> .NET 5.0 or higher
+            </div>
+        </section>
+
+        <section id="getting-started" class="section">
+            <h2>🎯 Getting Started</h2>
+            <p>RAPI provides simple, static classes to interact with Roblox version information.</p>
+
+            <div class="code-block">
+                <span class="code-lang">C#</span>
+                <code><span class="keyword">using</span> RAPI;
+
+<span class="comment">// Get player version for current OS</span>
+<span class="keyword">string</span> version = <span class="class-name">PlayerVersion</span>.<span class="method">Current</span>;
+
+<span class="comment">// Get Studio version</span>
+<span class="keyword">string</span> studioVer = <span class="class-name">StudioVersion</span>.<span class="method">Version</span>;
+
+<span class="comment">// Check local installation</span>
+<span class="keyword">string</span> installed = <span class="class-name">LocalVersion</span>.<span class="method">GetInstalled</span>();
+
+<span class="comment">// Compare versions</span>
+<span class="keyword">var</span> result = <span class="keyword">await</span> <span class="class-name">LocalVersion</span>.<span class="method">CompareAsync</span>();</code>
+            </div>
+        </section>
+
+        <section id="classes" class="section">
+            <h2>📚 Classes Overview</h2>
+
+            <div class="class-card">
+                <h4>APIInfo</h4>
+                <p>Contains information about the RAPI library itself.</p>
+                <div class="property-list">
+                    <div class="property-item">
+                        <code>APIInfo.Version</code> - Returns the API version (e.g., "1.0.0")
+                    </div>
+                    <div class="property-item">
+                        <code>APIInfo.Creator</code> - Returns "RAPI Team"
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-card">
+                <h4>OS</h4>
+                <p>Detects the current operating system.</p>
+                <div class="property-list">
+                    <div class="property-item">
+                        <code>OS.Windows</code> - Returns true if running on Windows
+                    </div>
+                    <div class="property-item">
+                        <code>OS.Mac</code> - Returns true if running on macOS
+                    </div>
+                    <div class="property-item">
+                        <code>OS.Linux</code> - Returns true if running on Linux
+                    </div>
+                    <div class="property-item">
+                        <code>OS.Name</code> - Returns OS name as string ("Windows", "Mac", "Linux", "Unknown")
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-card">
+                <h4>PlayerVersion</h4>
+                <p>Retrieves Roblox Player version information from official APIs.</p>
+                <div class="property-list">
+                    <div class="property-item">
+                        <code>PlayerVersion.Windows</code> - Gets Windows Player version
+                    </div>
+                    <div class="property-item">
+                        <code>PlayerVersion.Mac</code> - Gets Mac Player version
+                    </div>
+                    <div class="property-item">
+                        <code>PlayerVersion.Linux</code> - Gets Linux Player version
+                    </div>
+                    <div class="property-item">
+                        <code>PlayerVersion.Current</code> - Gets version for current OS
+                    </div>
+                    <div class="property-item">
+                        <code>PlayerVersion.ClearCache()</code> - Clears cached versions
+                    </div>
+                </div>
+                <div class="note">
+                    <strong>⚡ Caching:</strong> Results are cached for 5 minutes to improve performance.
+                </div>
+            </div>
+
+            <div class="class-card">
+                <h4>StudioVersion</h4>
+                <p>Retrieves Roblox Studio version information.</p>
+                <div class="property-list">
+                    <div class="property-item">
+                        <code>StudioVersion.Version</code> - Gets current Studio version
+                    </div>
+                    <div class="property-item">
+                        <code>StudioVersion.ClearCache()</code> - Clears cached version
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-card">
+                <h4>LocalVersion</h4>
+                <p>Checks locally installed Roblox version and compares with online version.</p>
+                <div class="property-list">
+                    <div class="property-item">
+                        <code>LocalVersion.GetInstalled()</code> - Gets locally installed version
+                    </div>
+                    <div class="property-item">
+                        <code>await LocalVersion.GetOnlineVersionAsync()</code> - Gets online deployment version
+                    </div>
+                    <div class="property-item">
+                        <code>await LocalVersion.CompareAsync()</code> - Compares local vs online versions
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-card">
+                <h4>VersionComparisonResult</h4>
+                <p>Result object returned by LocalVersion.CompareAsync().</p>
+                <div class="property-list">
+                    <div class="property-item">
+                        <code>OnlineVersion</code> - The online version string
+                    </div>
+                    <div class="property-item">
+                        <code>LocalVersion</code> - The local version string
+                    </div>
+                    <div class="property-item">
+                        <code>Status</code> - VersionStatus enum (UpToDate, UpdateAvailable, Error)
+                    </div>
+                    <div class="property-item">
+                        <code>Message</code> - User-friendly message describing the result
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="section">
+            <h2>💡 Usage Examples</h2>
+
+            <h3>WinForms Example</h3>
+            <div class="code-block">
+                <span class="code-lang">C#</span>
+                <code><span class="keyword">using</span> RAPI;
+
+<span class="keyword">public partial class</span> <span class="class-name">Form1</span> : <span class="class-name">Form</span>
+{
+    <span class="keyword">public</span> <span class="method">Form1</span>()
+    {
+        <span class="method">InitializeComponent</span>();
+        <span class="method">LoadVersions</span>();
+    }
+
+    <span class="keyword">private void</span> <span class="method">LoadVersions</span>()
+    {
+        <span class="comment">// Display versions in labels</span>
+        lblPlayerVersion.<span class="method">Text</span> = <span class="class-name">PlayerVersion</span>.<span class="method">Current</span>;
+        lblStudioVersion.<span class="method">Text</span> = <span class="class-name">StudioVersion</span>.<span class="method">Version</span>;
+        lblLocalVersion.<span class="method">Text</span> = <span class="class-name">LocalVersion</span>.<span class="method">GetInstalled</span>();
+        lblOS.<span class="method">Text</span> = <span class="class-name">OS</span>.<span class="method">Name</span>;
+    }
+
+    <span class="keyword">private async void</span> btnCompare_Click(<span class="keyword">object</span> sender, <span class="class-name">EventArgs</span> e)
+    {
+        <span class="keyword">var</span> result = <span class="keyword">await</span> <span class="class-name">LocalVersion</span>.<span class="method">CompareAsync</span>();
+        
+        <span class="keyword">if</span> (result.<span class="method">Status</span> == <span class="class-name">VersionStatus</span>.<span class="method">UpToDate</span>)
+        {
+            <span class="class-name">MessageBox</span>.<span class="method">Show</span>(result.<span class="method">Message</span>, <span class="string">"Up to Date"</span>, 
+                <span class="class-name">MessageBoxButtons</span>.<span class="method">OK</span>, <span class="class-name">MessageBoxIcon</span>.<span class="method">Information</span>);
+        }
+        <span class="keyword">else if</span> (result.<span class="method">Status</span> == <span class="class-name">VersionStatus</span>.<span class="method">UpdateAvailable</span>)
+        {
+            <span class="class-name">MessageBox</span>.<span class="method">Show</span>(result.<span class="method">Message</span>, <span class="string">"Update Available"</span>, 
+                <span class="class-name">MessageBoxButtons</span>.<span class="method">OK</span>, <span class="class-name">MessageBoxIcon</span>.<span class="method">Warning</span>);
+        }
+        <span class="keyword">else</span>
+        {
+            <span class="class-name">MessageBox</span>.<span class="method">Show</span>(result.<span class="method">Message</span>, <span class="string">"Error"</span>, 
+                <span class="class-name">MessageBoxButtons</span>.<span class="method">OK</span>, <span class="class-name">MessageBoxIcon</span>.<span class="method">Error</span>);
+        }
+    }
+}</code>
+            </div>
+
+            <h3>WPF Example</h3>
+            <div class="code-block">
+                <span class="code-lang">C#</span>
+                <code><span class="keyword">using</span> RAPI;
+
+<span class="keyword">public partial class</span> <span class="class-name">MainWindow</span> : <span class="class-name">Window</span>
+{
+    <span class="keyword">public</span> <span class="method">MainWindow</span>()
+    {
+        <span class="method">InitializeComponent</span>();
+        <span class="method">LoadVersions</span>();
+    }
+
+    <span class="keyword">private void</span> <span class="method">LoadVersions</span>()
+    {
+        txtPlayerVersion.<span class="method">Text</span> = <span class="class-name">PlayerVersion</span>.<span class="method">Current</span>;
+        txtStudioVersion.<span class="method">Text</span> = <span class="class-name">StudioVersion</span>.<span class="method">Version</span>;
+        txtLocalVersion.<span class="method">Text</span> = <span class="class-name">LocalVersion</span>.<span class="method">GetInstalled</span>();
+        txtOS.<span class="method">Text</span> = <span class="class-name">OS</span>.<span class="method">Name</span>;
+    }
+
+    <span class="keyword">private async void</span> CompareButton_Click(<span class="keyword">object</span> sender, <span class="class-name">RoutedEventArgs</span> e)
+    {
+        txtStatus.<span class="method">Text</span> = <span class="string">"Checking..."</span>;
+        
+        <span class="keyword">var</span> result = <span class="keyword">await</span> <span class="class-name">LocalVersion</span>.<span class="method">CompareAsync</span>();
+        
+        txtStatus.<span class="method">Text</span> = result.<span class="method">Message</span>;
+        txtOnlineVersion.<span class="method">Text</span> = result.<span class="method">OnlineVersion</span>;
+        txtLocalVersion.<span class="method">Text</span> = result.<span class="method">LocalVersion</span>;
+    }
+}</code>
+            </div>
+
+            <h3>Console Example</h3>
+            <div class="code-block">
+                <span class="code-lang">C#</span>
+                <code><span class="keyword">using</span> RAPI;
+
+<span class="keyword">class</span> <span class="class-name">Program</span>
+{
+    <span class="keyword">static async</span> <span class="class-name">Task</span> <span class="method">Main</span>(<span class="keyword">string</span>[] args)
+    {
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(<span class="string">$"=== RAPI v{APIInfo.Version} ==="</span>);
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(<span class="string">$"Operating System: {OS.Name}"</span>);
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(<span class="string">$"Player Version: {PlayerVersion.Current}"</span>);
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(<span class="string">$"Studio Version: {StudioVersion.Version}"</span>);
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(<span class="string">$"Local Install: {LocalVersion.GetInstalled()}"</span>);
+        
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(<span class="string">"\nComparing versions..."</span>);
+        <span class="keyword">var</span> result = <span class="keyword">await</span> <span class="class-name">LocalVersion</span>.<span class="method">CompareAsync</span>();
+        <span class="class-name">Console</span>.<span class="method">WriteLine</span>(result.<span class="method">Message</span>);
+    }
+}</code>
+            </div>
+        </section>
+
+        <section id="api-reference" class="section">
+            <h2>📖 API Reference</h2>
+
+            <h3>Return Types</h3>
+            <div class="property-list">
+                <div class="property-item">
+                    All synchronous properties return <code>string</code>
+                </div>
+                <div class="property-item">
+                    Async methods return <code>Task&lt;string&gt;</code> or <code>Task&lt;VersionComparisonResult&gt;</code>
+                </div>
+                <div class="property-item">
+                    Properties return <code>"unknown"</code> on error (except LocalVersion which returns descriptive error messages)
+                </div>
+            </div>
+
+            <h3>Caching Behavior</h3>
+            <div class="note">
+                <strong>🕐 Cache Duration:</strong> 5 minutes
+                <br><br>
+                PlayerVersion and StudioVersion cache results for 5 minutes to reduce API calls. 
+                Use <code>ClearCache()</code> methods to force a refresh.
+            </div>
+
+            <h3>Error Handling</h3>
+            <div class="example">
+                <strong>✅ Best Practice:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+                    <code><span class="keyword">string</span> version = <span class="class-name">PlayerVersion</span>.<span class="method">Current</span>;
+
+<span class="keyword">if</span> (version == <span class="string">"unknown"</span>)
+{
+    <span class="comment">// Handle error case</span>
+    <span class="class-name">MessageBox</span>.<span class="method">Show</span>(<span class="string">"Failed to fetch version"</span>);
+}
+<span class="keyword">else</span>
+{
+    <span class="comment">// Use version</span>
+    lblVersion.<span class="method">Text</span> = version;
+}</code>
+                </div>
+            </div>
+
+            <h3>Thread Safety</h3>
+            <p>All RAPI classes are thread-safe. HttpClient instances are reused and properly configured.</p>
+        </section>
+
+        <footer>
+            <p><strong>RAPI</strong> - Made with 💜 by the RAPI Team</p>
+            <p style="margin-top: 10px; color: #999; font-size: 0.9em;">
+                © 2025 | Version 1.0.0
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
